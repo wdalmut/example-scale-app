@@ -1,0 +1,14 @@
+INSTALL.txt
+LICENSE.txt
+README.txt
+demos/
+extras/documentation
+composer.phar
+vendor
+.project
+.settings
+.buildpath
+database-dump.sql
+*.swp
+*.swo
+*.swn
