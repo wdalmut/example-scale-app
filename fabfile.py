@@ -1,4 +1,8 @@
 #! /usr/bin/env python
+from __future__ import with_statement
+from fabric.api import *
+from fabric.contrib.console import confirm
+
 from cloth.tasks import *
 
 env.user = "root"
