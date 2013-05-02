@@ -6,6 +6,19 @@ APACHE_HOST_NAME=my-scale-app
 APACHE_HOST=/etc/apache2/sites-available/$APACHE_HOST_NAME
 OUTFOLDER=/mnt/$APACHE_HOST_NAME
 
+# Update whole system and install packages
+apt-get update 
+apt-get upgrade -y --force-yes 
+apt-get install -y --force-yes --fix-missing build-essential curl subversion \
+        libpcre3-dev apache2 libapache2-mod-php5 php5 php5-common php5-cli \
+        php-pear php5-dev git git-core php5-curl
+
+# Install APC using default values
+printf "" | pecl install -a -f apc
+
+touch /etc/php5/conf.d/apc.ini
+echo "extension=apc.so" >> /etc/php5/conf.d/apc.ini
+echo "apc.shm_size=512M" >> /etc/php5/conf.d/apc.ini
 echo "suhosin.executor.include.whitelist=phar" >> /etc/php5/conf.d/suhosin.ini
 
 # Prepare Git repository
@@ -14,7 +27,7 @@ touch /root/.ssh/config
 echo "Host github.com" >> /root/.ssh/config
 echo "StrictHostKeyChecking no" >> /root/.ssh/config
 
-git clone -q --recursive https://github.com/wdalmut/my-scale-app.git $OUTFOLDER
+git clone -q --recursive https://github.com/wdalmut/example-scale-app.git $OUTFOLDER
 
 /usr/bin/php $OUTFOLDER/composer.phar self-update -d $OUTFOLDER 
 /usr/bin/php $OUTFOLDER/composer.phar install -d $OUTFOLDER
