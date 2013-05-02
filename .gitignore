@@ -12,3 +12,4 @@ database-dump.sql
 *.swp
 *.swo
 *.swn
+*.pyc
