@@ -8,7 +8,7 @@ from cloth.tasks import *
 env.user = "root"
 
 env.directory = '/mnt/my-scale-app'
-env.key_filename = ['/home/walter/Amazon/walter/tmp-corley-cms.pem']
+env.key_filename = ['~/Amazon/WDM/tmp-corley-cms.pem']
 
 @task
 def pull():
