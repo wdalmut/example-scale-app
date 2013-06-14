@@ -15,6 +15,8 @@ def pull():
     'Updates the repository.'
     with cd(env.directory):
         run('git pull origin master')
+        reload()
+
 
 @task
 def reload():
