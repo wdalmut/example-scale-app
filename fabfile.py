@@ -5,16 +5,16 @@ from fabric.contrib.console import confirm
 
 from cloth.tasks import *
 
-env.user = "root"
+env.user = "ubuntu"
 
-env.directory = '/mnt/my-scale-app'
-env.key_filename = ['~/Amazon/WDM/tmp-corley-cms.pem']
+env.directory = '/mnt/app'
+env.key_filename = ['~/Amazon/walterdalmut/tmp-corley-cms.pem']
 
 @task
 def pull():
     'Updates the repository.'
     with cd(env.directory):
-        run('git pull origin master')
+        sudo('git pull origin master')
 
 
 @task
@@ -25,4 +25,22 @@ def reload():
 @task
 def tail():
     "Tail Apache logs"
-    run('tail /var/log/syslog')
+    run('tail /var/log/apache2/access.log')
+
+@task
+def remove_app():
+    sudo("rm -rf /mnt/app")
+
+@task
+def install_app():
+    "Install my application"
+    sudo("apt-get update")
+    sudo("apt-get install -y apache2 libapache2-mod-php5 php5-dev git php5-memcached")
+    sudo('a2enmod rewrite')
+    sudo('service apache2 restart')
+    sudo("git clone https://github.com/wdalmut/example-scale-app.git /mnt/app")
+    put("000-default", "/etc/apache2/sites-available/000-default.conf", True)
+    sudo("service apache2 restart")
+    with cd(env.directory):
+        sudo("php composer.phar install")
+
